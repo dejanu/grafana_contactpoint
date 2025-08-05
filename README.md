@@ -13,6 +13,14 @@ pip install -r requirements.txt
 docker-compose -f docker-compose.yaml up --build -d
 ```
 
+* Create `.env` file
+
+```bash
+cat<<EOF>.env
+TWILIO_ACCOUNT_SID="INSERT_VALUE"
+TWILIO_AUTH_TOKEN="INSERT_VALUE"
+```
+
 ## Grafana config
 
 * Get the web container name `docker ps --format "{{.Names}}"` and API key value `docker logs <container_name>`
