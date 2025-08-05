@@ -2,7 +2,6 @@
 
 * [contact point in Grafana](https://grafana.com/docs/grafana/latest/alerting/fundamentals/#contact-points)
 
-
 Contact Points determine the notification message and where notifications are sent. 
 For example, you might have a contact point that sends notifications to an email address, to Slack, to an incident management system (IRM) such as Grafana IRM or PagerDuty, or to a **webhook**.
 

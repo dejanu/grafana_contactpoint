@@ -38,7 +38,7 @@ def create_twilio_client():
     message = client.messages.create(
         body="test alert",
         from_="+16075364794", # virtual number provided by Twilio
-        to="+40728593748", # destination number
+        to="+407287856559", # destination number
     )
 
 def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)):
