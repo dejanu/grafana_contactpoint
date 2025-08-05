@@ -10,7 +10,7 @@ source .fastapivevn/bin/activate
 pip install -r requirements.txt
 
 # start grafana and service
-docker-compose -f docker-compose.yaml up d-
+docker-compose -f docker-compose.yaml up --build -d
 ```
 
 ## App
