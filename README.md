@@ -15,7 +15,7 @@ docker-compose -f docker-compose.yaml up --build -d
 
 ## Grafana config
 
-* Get the web container name `docker ps --format "{{.Names}}"` and API key value `docker logs <container_name>'
+* Get the web container name `docker ps --format "{{.Names}}"` and API key value `docker logs <container_name>`
 * Create new contact point [here](http://127.0.0.1:3000/alerting/notifications/receivers/new) and 
 
 ## App
