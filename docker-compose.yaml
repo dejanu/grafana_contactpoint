@@ -1,0 +1,17 @@
+services:
+  fastapi:
+    #image: dejanualex/fastapi:0.0.3
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - TWILIO_ACCOUNT_SID=${TWILIO_ACCOUNT_SID}
+      - TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}
+    
+  grafana:
+    image: grafana/grafana-enterprise 
+    ports:
+      - "3000:3000"
