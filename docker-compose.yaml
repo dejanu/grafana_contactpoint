@@ -4,6 +4,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: localfastapi
     ports:
       - "8000:8000"
     environment:
@@ -12,6 +13,27 @@ services:
       - TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}
     
   grafana:
-    image: grafana/grafana-enterprise 
+    image: grafana/grafana-oss:latest
+    container_name: localgrafana
     ports:
       - "3000:3000"
+    volumes:
+      - ./grafana_volume/grafana.ini:/etc/grafana/grafana.ini
+      - ./grafana_volume/datasources.yaml:/etc/grafana/provisioning/datasources/datasource.yaml
+    depends_on:
+      - prometheus
+    links:
+      - prometheus
+    restart: always
+
+  prometheus:
+    image: prom/prometheus:latest
+    hostname: prometheus
+    container_name: localprometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus_volume/prometheus.yaml:/etc/prometheus/prometheus.yaml
+    command:
+      - '--web.enable-lifecycle'
+      - '--config.file=/etc/prometheus/prometheus.yml'

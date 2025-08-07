@@ -1,0 +1,37 @@
+apiVersion: 1
+
+datasources:
+  - name: Prometheus
+    type: prometheus
+    access: proxy
+    url: http://prometheus:9090
+    isDefault: true
+    editable: true
+    jsonData:
+      httpMethod: POST
+      prometheusType: Prometheus
+      prometheusVersion: "2.40.0"
+      queryTimeout: "60s"
+      timeInterval: "30s"
+      # Enable exemplars for distributed tracing
+      exemplarTraceIdDestinations:
+        - name: trace_id
+          datasourceUid: jaeger_uid
+      # Custom HTTP headers (if needed)
+      customQueryParameters: ""
+      # Disable metrics lookup (improves performance for large setups)
+      disableMetricsLookup: false
+    secureJsonData: {}
+    # Basic auth (if Prometheus requires authentication)
+    # basicAuth: true
+    # basicAuthUser: "username"
+    # secureJsonData:
+    #   basicAuthPassword: "password"
+    
+  # Example of adding multiple datasources
+  # - name: Prometheus-Dev
+  #   type: prometheus
+  #   access: proxy
+  #   url: http://prometheus-dev:9090
+  #   isDefault: false
+  #   editable: true

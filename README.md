@@ -26,14 +26,12 @@ For example, you might have a contact point that sends notifications to an email
 
 ## Setup
 
+* Setup webapp
 ```bash
 # install dependencies
 python -m venv .fastapivevn
 source .fastapivevn/bin/activate
 pip install -r requirements.txt
-
-# start grafana and web services
-docker-compose -f docker-compose.yaml up --build -d
 ```
 
 * Create `.env` file
@@ -43,6 +41,18 @@ cat<<EOF>.env
 TWILIO_ACCOUNT_SID="INSERT_VALUE"
 TWILIO_AUTH_TOKEN="INSERT_VALUE"
 ```
+* Start docker containers
+
+```bash
+# start services and Build images before starting containers
+docker-compose -f docker-compose.yaml up --build -d
+docker-compose -f docker-compose.yaml ps
+
+# stop services
+docker-compose -f docker-compose.yaml down
+```
+
+🐱‍💻 Grafana should be accessible on [localhost:3000](http://127.0.0.1:3000) and Prometheus on [localhost:9090](http://127.0.0.1:9090)
 
 ## Grafana config
 
