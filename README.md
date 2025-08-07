@@ -25,7 +25,8 @@ For example, you might have a contact point that sends notifications to an email
 
 ## Setup
 
-* Setup webapp
+* Setup localfastapi
+
 ```bash
 # install dependencies
 python -m venv .fastapivevn
@@ -51,16 +52,21 @@ docker-compose -f docker-compose.yaml ps
 docker-compose -f docker-compose.yaml down
 ```
 
-🐱‍💻 Grafana should be accessible on [localhost:3000](http://127.0.0.1:3000) and Prometheus on [localhost:9090](http://127.0.0.1:9090)
+💻👉 Grafana should be accessible on [localhost:3000](http://127.0.0.1:3000) and Prometheus on [localhost:9090](http://127.0.0.1:9090)
 
-## Grafana config
+## Grafana contact point config
 
-* Get the web container name `docker ps --format "{{.Names}}"` and API key value `docker logs <container_name>`
-* Create new contact point [here](http://127.0.0.1:3000/alerting/notifications/receivers/new) and 
-
-## App
-
-* At startup will generate an API key, used for auth, to be passed in the authorization header: Authorization: Bearer <your_api_key>
+* Get the web container name `docker ps --format "{{.Names}}"` and API key value `docker logs localfastapi`
+* At startup `localfastapi` will generate an API key, used for auth, to be passed in the authorization header: `Authorization: Bearer <your_api_key>`
 * Get data from Grafana and send it to an sms gateway/Routing PSTN or VoIP (e.g. [twilio](https://www.twilio.com/docs))
 
+* Create new contact point 💻👉 [here](http://127.0.0.1:3000/alerting/notifications/receivers/new) and add the `SERVICE` coresponding to `localfastapi` container (`docker-compose -f docker-compose.yaml ps` to check container and service names)
 
+
+## Diagram Arhitecture
+
+```mermaid
+graph TD;
+    Prometheus-->Grafana;
+    Grafana-->localfastapi;
+```
