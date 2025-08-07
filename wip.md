@@ -14,3 +14,12 @@ helm install prom prometheus-community/kube-prometheus-stack -n monitoring --set
 kubectl -n monitoring get secrets prom-grafana -ojsonpath="{.data.admin-password}" | base64 -d
 kubectl -n monitoring port-forward svc/prom-grafana 8088:80
 ```
+
+
+## Alternatives
+
+Jira Service Management and Compass
+Atlassian offers two option to migrate from Opsgenie: JSM or Compass.
+
+Grafana OnCall
+Part of Grafana Cloud IRM (Incident response & management).Delivers customized notifications via Slack, Microsoft Teams, Telegram, SMS, phone calls, email, and more. 

@@ -1,9 +1,15 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+##################################################################################
+## Contact point define where and how alert notifications are sent
+## Contact points integrate with external services like email, SMS, or webhooks.
+#################################################################################
+
 import uuid
 from fastapi import FastAPI, Depends, HTTPException, status, Request
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from pydantic import BaseModel
-
-
 
 app = FastAPI()
 
@@ -52,10 +58,20 @@ def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)):
 
 @app.post("/receive")
 async def receive_data(request: Request, token: str = Depends(verify_token)):
-    """ do stuff """
+    """ Parse Grafana webhook data """
     body = await request.json()
     print("Raw incoming webhook:", body)
+    # if body.get("status") == "firing":
+    #     create_twilio_client()
     print ("Status:", body.get("status", "No status provided"))
-    if body.get("status") == "firing":
-      create_twilio_client()
+    print("No of alerts:", len(body.get("alerts", [])))
+    for alert in body.get("alerts", []):
+        print(f"Alert: {alert.get('labels', {}).get('alertname', 'No alert name')}, "
+              f"Status: {alert.get('status', 'No status')}, "
+              f"Starts at: {alert.get('startsAt', 'No start time')}")   
     return {"status": "received"}
+
+
+## k8s deployment
+## kubectl run grafanacontactpoint --image=dejanualex/grafana_contactpoint:1.0 
+## kubectl expose pod grafanacontactpoint --name=grafanacontact --type="ClusterIP" --port=8000 --target-port=8000
