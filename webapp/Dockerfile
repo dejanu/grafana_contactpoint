@@ -7,9 +7,9 @@ RUN pip3 install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-#ENV FLASK_APP main.py
-ENV FLASK_RUN_HOST=localhost
+ENV FLASK_APP=app.py
+ENV FLASK_RUN_HOST=0.0.0.0
 ENV FLASK_RUN_PORT=8081
 EXPOSE 8081
 
-CMD [ "python3", "-m" , "flask", "run", "--host=0.0.0.0"]
+CMD [ "python3", "-m" , "flask", "run", "--host=0.0.0.0", "--port=8081"]

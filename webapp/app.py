@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+# Don't forget to set the environment variables before running this script:
+# export FLASK_RUN_PORT="8081
 
 # from prometheus_client import start_http_server
 
@@ -15,8 +17,9 @@ app.wsgi_app = DispatcherMiddleware(app.wsgi_app, {
 })
 
 # Create a metric to track time spent and requests made.
-from prometheus_client import Counter
-c = Counter('my_failures_total', 'Total number of failures')
+from prometheus_client import Gauge
+c = Gauge('my_failures_total', 'Total number of failures')
+c.set(0)  # Set the failure gauge
 
 @app.route('/', methods = ['GET'])
 def index():
@@ -26,8 +29,14 @@ def index():
 @app.route('/fail', methods = ['GET'])
 def fail():
     """A dummy route that fails"""
-    c.inc()  # Increment the failure counter
+    c.inc()
     return "This route always fails", 500
+
+@app.route('/success', methods = ['GET'])
+def success():
+    """A dummy route that succeeds"""
+    c.set(0)  # Reset the failure gauge
+    return "This route always succeeds", 200
 
 if __name__ == '__main__':
     ## start a HTTP server in a daemon thread
