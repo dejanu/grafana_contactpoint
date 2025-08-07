@@ -4,6 +4,7 @@ __pycache__/
 *$py.class
 .env
 .fastapivevn/
+webapp/.webappenv/
 
 # C extensions
 *.so

@@ -37,3 +37,13 @@ services:
     command:
       - '--web.enable-lifecycle'
       - '--config.file=/etc/prometheus/prometheus.yml'
+
+  webapp:
+    build:
+      context: ./webapp
+      dockerfile: Dockerfile
+    container_name: localwebapp
+    ports:
+      - "8081:8081"
+    environment:
+      - FLASK_ENV=development

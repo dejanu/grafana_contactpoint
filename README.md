@@ -13,16 +13,6 @@ For example, you might have a contact point that sends notifications to an email
 3. If a condition is breached, an alert instance fires.
 4. Firing (and resolved) alert instances are sent for notifications, either directly to a contact point or through notification policies for more flexibility.
 
-
-## Functionality/Needs:
-
-* Routing phone calls (Routing in the PSTN or VoIP)
-* Alert policies
-* Manage on-call schedules
-* Integrations with tooling (webhooks and stuff)
-* Forwarding rules
-* Licensing options
-
 ## Setup
 
 * Setup localfastapi
@@ -62,11 +52,27 @@ docker-compose -f docker-compose.yaml down
 
 * Create new contact point 💻👉 [here](http://127.0.0.1:3000/alerting/notifications/receivers/new) and add the `SERVICE` coresponding to `localfastapi` container (`docker-compose -f docker-compose.yaml ps` to check container and service names)
 
+### Functionality/Needs to be implemented by `localfastapi` contact point
+
+* Routing phone calls (Routing in the PSTN or VoIP)
+* Alert policies
+* Manage on-call schedules
+* Integrations with tooling (webhooks and stuff)
+* Forwarding rules
+* Licensing options
+
+## Webapp
+
+* The `webapp` that expose `/metrics` and `/fail` endpoints.
+The `/metrics` endpoint is used by Prometheus to scrape metrics, while the `/fail` endpoint simulates a failure by incrementing a counter.
+
+* Check metrincs 💻👉 [here](http://127.0.0.1:8081/metrics)
 
 ## Diagram Arhitecture
 
 ```mermaid
 graph TD;
+    webapp --> Prometheus;
     Prometheus-->Grafana;
     Grafana-->localfastapi;
 ```
