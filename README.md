@@ -6,8 +6,7 @@ Contact Points determine the notification message and where notifications are se
 For example, you might have a contact point that sends notifications to an email address, to Slack, to an incident management system (IRM) such as Grafana IRM or PagerDuty, or to a **webhook**.
 
 
-
-![setup](./src/grafanacontactpoint.png)
+![setup](./diagrams/grafanacontactpoint.png)
 
 1. Grafana Alerting periodically evaluates alert rules by executing their data source queries and checking their  conditions.
 2. Each alert rule can produce multiple alert instances - one per time series or dimension

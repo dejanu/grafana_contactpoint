@@ -18,7 +18,7 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./grafana_volume/grafana.ini:/etc/grafana/grafana.ini
+      # - ./grafana_volume/grafana.ini:/etc/grafana/grafana.ini
       - ./grafana_volume/datasources.yaml:/etc/grafana/provisioning/datasources/datasource.yaml
     depends_on:
       - prometheus
