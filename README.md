@@ -6,7 +6,7 @@ Contact Points determine the notification message and where notifications are se
 For example, you might have a contact point that sends notifications to an email address, to Slack, to an incident management system (IRM) such as Grafana IRM or PagerDuty, or to a **webhook**.
 
 
-![setup](./diagrams/grafanacontactpoint.png)
+![contactpoint](./diagrams/grafanacontactpoint.png)
 
 1. Grafana Alerting periodically evaluates alert rules by executing their data source queries and checking their  conditions.
 2. Each alert rule can produce multiple alert instances - one per time series or dimension
@@ -14,6 +14,15 @@ For example, you might have a contact point that sends notifications to an email
 4. Firing (and resolved) alert instances are sent for notifications, either directly to a contact point or through notification policies for more flexibility.
 
 ## Setup
+
+### Diagram Arhitecture
+
+```mermaid
+graph TD;
+    webapp --> Prometheus;
+    Prometheus-->Grafana;
+    Grafana-->localfastapi;
+```
 
 * Setup localfastapi
 
@@ -31,6 +40,7 @@ cat<<EOF>.env
 TWILIO_ACCOUNT_SID="INSERT_VALUE"
 TWILIO_AUTH_TOKEN="INSERT_VALUE"
 ```
+
 * Start docker containers
 
 ```bash
@@ -64,15 +74,6 @@ docker-compose -f docker-compose.yaml down
 ## Webapp
 
 * The `webapp` that expose `/metrics` and `/fail` endpoints.
-The `/metrics` endpoint is used by Prometheus to scrape metrics, while the `/fail` endpoint simulates a failure by incrementing a counter.
+The `/metrics` endpoint is used by Prometheus to scrape metrics, while the `/fail` endpoint simulates a failure by incrementing a gauge and `/success` resets the gauge.
 
 * Check metrincs 💻👉 [here](http://127.0.0.1:8081/metrics)
-
-## Diagram Arhitecture
-
-```mermaid
-graph TD;
-    webapp --> Prometheus;
-    Prometheus-->Grafana;
-    Grafana-->localfastapi;
-```
