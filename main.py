@@ -37,6 +37,8 @@ def create_twilio_client():
 
     account_sid = os.environ["TWILIO_ACCOUNT_SID"]
     auth_token = os.environ["TWILIO_AUTH_TOKEN"]
+    phone_number = os.environ["DESTINATION_PHONE_NUMBER"]
+    print(f"📞 Notifying: {phone_number}")
 
     client = Client(account_sid, auth_token)
 
@@ -44,7 +46,7 @@ def create_twilio_client():
     message = client.messages.create(
         body="test alert",
         from_="+16075364794", # virtual number provided by Twilio
-        to="+407287856559", # destination number
+        to=phone_number, # destination number
     )
 
 def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)):
@@ -61,8 +63,8 @@ async def receive_data(request: Request, token: str = Depends(verify_token)):
     """ Parse Grafana webhook data """
     body = await request.json()
     print("Raw incoming webhook:", body)
-    # if body.get("status") == "firing":
-    #     create_twilio_client()
+    if body.get("status") == "firing":
+        create_twilio_client()
     print ("Status:", body.get("status", "No status provided"))
     print("No of alerts:", len(body.get("alerts", [])))
     for alert in body.get("alerts", []):
@@ -70,8 +72,3 @@ async def receive_data(request: Request, token: str = Depends(verify_token)):
               f"Status: {alert.get('status', 'No status')}, "
               f"Starts at: {alert.get('startsAt', 'No start time')}")   
     return {"status": "received"}
-
-
-## k8s deployment
-## kubectl run grafanacontactpoint --image=dejanualex/grafana_contactpoint:1.0 
-## kubectl expose pod grafanacontactpoint --name=grafanacontact --type="ClusterIP" --port=8000 --target-port=8000

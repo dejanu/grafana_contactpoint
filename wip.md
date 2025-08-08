@@ -23,3 +23,10 @@ Atlassian offers two option to migrate from Opsgenie: JSM or Compass.
 
 Grafana OnCall
 Part of Grafana Cloud IRM (Incident response & management).Delivers customized notifications via Slack, Microsoft Teams, Telegram, SMS, phone calls, email, and more. 
+
+
+### k8s deployment
+kubectl run grafanacontactpoint --image=dejanualex/grafana_contactpoint:1.0 
+kubectl expose pod grafanacontactpoint --name=grafanacontact --type="ClusterIP" --port=8000 --target-port=8000
+
+helm install grafana-hotline ./grafana-hotline --set phone.destinationPhoneNumber="+40728593748"
