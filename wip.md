@@ -4,15 +4,19 @@ Go for full [kube prometheus](https://github.com/prometheus-operator/kube-promet
 # install only the operator via helm https://github.com/prometheus-operator/prometheus-operator?tab=readme-ov-file#helm-chart
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo update
+
+# choose a version 
+helm search repo prometheus-community | grep kube-prometheus-stack
 helm install [RELEASE_NAME] prometheus-community/kube-prometheus-stack
 
+helm install promstack prometheus-community/kube-prometheus-stack
 # need for  lstat /var/log/pods/monitoring_prom-prometheus-node-exporter...no such file or directory error
-helm install prom prometheus-community/kube-prometheus-stack -n monitoring --set prometheus-node-exporter.hostRootFsMount.enabled=false
+helm install promstack prometheus-community/kube-prometheus-stack --set prometheus-node-exporter.hostRootFsMount.enabled=false
 
-# check grafana
-# get password for admin user
-kubectl -n monitoring get secrets prom-grafana -ojsonpath="{.data.admin-password}" | base64 -d
-kubectl -n monitoring port-forward svc/prom-grafana 8088:80
+kubectl port-forward svc/promstack-grafana 3000:80
+
+### k8s deployment based on --image=dejanualex/grafana_contactpoint:1.0 
+helm install grafana-hotline ./grafana-hotline --set phone.destinationPhoneNumber="+40...."
 ```
 
 
@@ -24,9 +28,3 @@ Atlassian offers two option to migrate from Opsgenie: JSM or Compass.
 Grafana OnCall
 Part of Grafana Cloud IRM (Incident response & management).Delivers customized notifications via Slack, Microsoft Teams, Telegram, SMS, phone calls, email, and more. 
 
-
-### k8s deployment
-kubectl run grafanacontactpoint --image=dejanualex/grafana_contactpoint:1.0 
-kubectl expose pod grafanacontactpoint --name=grafanacontact --type="ClusterIP" --port=8000 --target-port=8000
-
-helm install grafana-hotline ./grafana-hotline --set phone.destinationPhoneNumber="+40728593748"
