@@ -53,6 +53,11 @@ docker-compose -f docker-compose.yaml down
 
 # k8s deployment
 helm install grafana-hotline ./grafana-hotline --set phone.destinationPhoneNumber="+40...." 
+
+# helm deployment
+helm repo add dejanu https://dejanu.github.io/chartsrepo/
+helm repo update dejanu
+helm search repo dejanu | grep grafana-hotline
 ```
 
 💻👉 Grafana should be accessible on [localhost:3000](http://127.0.0.1:3000) and Prometheus on [localhost:9090](http://127.0.0.1:9090)
