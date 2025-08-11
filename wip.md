@@ -10,13 +10,19 @@ helm search repo prometheus-community | grep kube-prometheus-stack
 helm install [RELEASE_NAME] prometheus-community/kube-prometheus-stack
 
 helm install promstack prometheus-community/kube-prometheus-stack
+
 # need for  lstat /var/log/pods/monitoring_prom-prometheus-node-exporter...no such file or directory error
 helm install promstack prometheus-community/kube-prometheus-stack --set prometheus-node-exporter.hostRootFsMount.enabled=false
 
 kubectl port-forward svc/promstack-grafana 3000:80
 
 ### k8s deployment based on --image=dejanualex/grafana_contactpoint:1.0 
+# Install from local chart directory
 helm install grafana-hotline ./grafana-hotline --set phone.destinationPhoneNumber="+40...."
+
+# Install from GitHub (private repo)
+helm install grafana-hotline https://raw.githubusercontent.com/dejanu/grafana_contactpoint/main/charts/grafana-hotline-0.0.1.tgz \
+  --set phone.destinationPhoneNumber="+40...."
 ```
 
 
