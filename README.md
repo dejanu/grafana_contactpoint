@@ -79,4 +79,4 @@ helm install grafana-hotline ./grafana-hotline --set phone.destinationPhoneNumbe
 * The `webapp` that expose `/metrics` and `/fail` endpoints.
 The `/metrics` endpoint is used by Prometheus to scrape metrics, while the `/fail` endpoint simulates a failure by incrementing a gauge and `/success` resets the gauge.
 
-* Check metrincs 💻👉 [here](http://127.0.0.1:8081/metrics)
+* Check metrics 💻👉 [here](http://127.0.0.1:8081/metrics)
