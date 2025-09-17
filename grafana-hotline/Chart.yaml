@@ -1,6 +1,6 @@
 apiVersion: v2
 name: grafana-hotline
-description: A Helmet chart for Grafana hotline
+description: A Helm chart for Grafana hotline
 
 # A chart can be either an 'application' or a 'library' chart.
 #
