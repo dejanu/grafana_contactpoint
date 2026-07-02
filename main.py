@@ -31,23 +31,29 @@ print(f"Usage: curl -X POST http://localhost:8000/receive "
 async def root():
     return {"message": "Send POST to receive endpoint..."}
 
-def create_twilio_client():
+def create_twilio_client(body: str):
     import os
     from twilio.rest import Client
 
     account_sid = os.environ["TWILIO_ACCOUNT_SID"]
     auth_token = os.environ["TWILIO_AUTH_TOKEN"]
+    from_number = os.environ["TWILIO_FROM_NUMBER"]
     phone_number = os.environ["DESTINATION_PHONE_NUMBER"]
-    print(f"📞 Notifying: {phone_number}")
+    print(f"📞 Notifying {phone_number} from {from_number}")
 
     client = Client(account_sid, auth_token)
 
-
-    message = client.messages.create(
-        body="test alert",
-        from_="+16075364794", # virtual number provided by Twilio
-        to=phone_number, # destination number
-    )
+    try:
+        message = client.messages.create(
+            body=body,
+            from_=from_number,
+            to=phone_number,
+        )
+        print(f"✅ SMS sent: {message.sid}")
+        return message
+    except Exception as exc:
+        print(f"❌ Twilio SMS failed: {exc}")
+        raise
 
 def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)):
     """Verify the provided API key"""
@@ -64,7 +70,12 @@ async def receive_data(request: Request, token: str = Depends(verify_token)):
     body = await request.json()
     print("Raw incoming webhook:", body)
     if body.get("status") == "firing":
-        create_twilio_client()
+        alert_names = [
+            alert.get("labels", {}).get("alertname", "unknown")
+            for alert in body.get("alerts", [])
+        ]
+        sms_body = f"Grafana alert firing: {', '.join(alert_names) or 'unknown'}"
+        create_twilio_client(sms_body)
     print ("Status:", body.get("status", "No status provided"))
     print("No of alerts:", len(body.get("alerts", [])))
     for alert in body.get("alerts", []):

@@ -39,15 +39,16 @@ pip install -r requirements.txt
 cat<<EOF>.env
 TWILIO_ACCOUNT_SID="INSERT_VALUE"
 TWILIO_AUTH_TOKEN="INSERT_VALUE"
+TWILIO_FROM_NUMBER="+1XXXXXXXXXX"
+DESTINATION_PHONE_NUMBER="+40XXXXXXXXX"
 ```
 
 * Start docker containers
 
 ```bash
 # start services and Build images before starting containers
-docker-compose -f docker-compose.yaml up --build -d
-docker-compose -f docker-compose.yaml ps
-
+docker-compose -f docker-compose.yaml up --build -d 
+   
 # stop services
 docker-compose -f docker-compose.yaml down
 
@@ -68,7 +69,7 @@ helm search repo dejanu | grep grafana-hotline
 * At startup `localfastapi` will generate an API key, used for auth, to be passed in the authorization header: `Authorization: Bearer <your_api_key>`
 * Get data from Grafana and send it to an sms gateway/Routing PSTN or VoIP (e.g. [twilio](https://www.twilio.com/docs))
 
-* Create new contact point 💻👉 [here](http://127.0.0.1:3000/alerting/notifications/receivers/new) and add the `SERVICE` coresponding to `localfastapi` container (`docker-compose -f docker-compose.yaml ps` to check container and service names)
+* Create new contact point 💻👉 [here](http://127.0.0.1:3000/alerting/notifications/receivers/new) and add the `SERVICE` (i.e. `http://grafana-hotline.default.svc.cluster.local:8000/receive`) or container name (i.e.`http://localfastapi:8000/receive` - use `docker-compose -f docker-compose.yaml ps` to check container name) coresponding to `fastapi` app.
 
 ### Functionality/Needs to be implemented by `localfastapi` contact point
 

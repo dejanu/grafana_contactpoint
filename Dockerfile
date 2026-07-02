@@ -1,4 +1,4 @@
-FROM python:3-alpine
+FROM python:3.12-slim
 WORKDIR /app
 # bind mount instead since we don't need requirements
 RUN --mount=type=bind,source=requirements.txt,target=/tmp/requirements.txt \
